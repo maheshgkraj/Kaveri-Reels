@@ -16,7 +16,7 @@
     .top-bar {
       position: fixed; top: 0; left: 0; right: 0; z-index: 30;
       padding: calc(env(safe-area-inset-top, 14px) + 10px) 16px 14px;
-      background: linear-gradient(to bottom, rgba(0,0,0,0.82), transparent);
+      background: linear-gradient(to bottom, rgba(0,0,0,0.85), transparent);
       display: flex; justify-content: space-between; align-items: center;
     }
     .brand { display: flex; align-items: center; gap: 8px; }
@@ -27,8 +27,8 @@
     }
     .series-title { font-size: 15px; font-weight: 700; letter-spacing: 0.2px; }
     .ep-pill {
-      background: rgba(255,255,255,0.14); backdrop-filter: blur(8px);
-      border: 1px solid rgba(255,255,255,0.2); color: #fff;
+      background: rgba(255,255,255,0.16); backdrop-filter: blur(8px);
+      border: 1px solid rgba(255,255,255,0.22); color: #fff;
       padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; cursor: pointer;
     }
 
@@ -48,10 +48,28 @@
       width: 100%; height: 100%; object-fit: cover; background: #000;
     }
 
+    /* Center Play / Status Overlay */
+    .center-play {
+      position: absolute; z-index: 18;
+      width: 68px; height: 68px; border-radius: 50%;
+      background: rgba(0,0,0,0.62); border: 2px solid rgba(255,255,255,0.8);
+      color: #fff; font-size: 26px; display: flex; align-items: center; justify-content: center;
+      cursor: pointer; backdrop-filter: blur(4px);
+    }
+    .center-play.hidden { display: none; }
+
+    .status-pill {
+      position: absolute; top: 74px; left: 50%; transform: translateX(-50%); z-index: 25;
+      background: rgba(245, 158, 11, 0.92); color: #000;
+      padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 700;
+      cursor: pointer; box-shadow: 0 4px 14px rgba(0,0,0,0.45);
+    }
+    .status-pill.hidden { display: none; }
+
     /* Lock Overlay */
     .lock-screen {
       position: absolute; inset: 0; z-index: 20;
-      background: radial-gradient(circle at center, rgba(24,20,14,0.88), rgba(7,7,9,0.97));
+      background: radial-gradient(circle at center, rgba(24,20,14,0.9), rgba(7,7,9,0.98));
       display: flex; flex-direction: column; align-items: center; justify-content: center;
       padding: 28px; text-align: center;
     }
@@ -68,13 +86,12 @@
       font-size: 15px; font-weight: 700; cursor: pointer;
       box-shadow: 0 8px 24px rgba(234, 88, 12, 0.4);
     }
-    .unlock-btn:active { transform: scale(0.97); }
 
     /* Bottom Metadata & Right Controls */
     .overlay-bottom {
       position: absolute; left: 0; right: 68px; bottom: 0; z-index: 15;
       padding: 20px 16px calc(env(safe-area-inset-bottom, 16px) + 18px);
-      background: linear-gradient(to top, rgba(0,0,0,0.88), transparent);
+      background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
       pointer-events: none;
     }
     .ep-tag {
@@ -90,12 +107,12 @@
     }
     .rail-btn {
       width: 44px; height: 44px; border-radius: 50%;
-      background: rgba(255,255,255,0.14); backdrop-filter: blur(8px);
-      border: 1px solid rgba(255,255,255,0.18); color: #fff;
+      background: rgba(255,255,255,0.16); backdrop-filter: blur(8px);
+      border: 1px solid rgba(255,255,255,0.2); color: #fff;
       display: flex; flex-direction: column; align-items: center; justify-content: center;
       font-size: 18px; cursor: pointer;
     }
-    .rail-label { font-size: 10px; color: #e5e7eb; margin-top: 3px; font-weight: 600; }
+    .rail-label { font-size: 10px; color: #e5e7eb; margin-top: 3px; font-weight: 600; text-align: center; }
 
     /* Progress Bar */
     .progress-track {
@@ -160,58 +177,59 @@
   </div>
 
   <script>
-    // Replace with your Cloudflare R2 public JSON URL once uploaded (e.g., https://pub-xxx.r2.dev/episodes.json)
+    // Paste your Cloudflare R2 public JSON URL here once uploaded (e.g., https://pub-xxx.r2.dev/episodes.json)
     const REMOTE_MANIFEST_URL = "";
 
-    // Built-in Pilot Episodes (uses reliable HTTPS sample streams until you paste your Cloudflare R2 MP4 URLs)
+    // Active HTTPS MP4 sample streams (replace with your Cloudflare R2 MP4 URLs when ready)
     let episodes = [
       {
         id: 1,
         title: "Ep 1: The Chola Astrolabe",
         synopsis: "Archaeologist Arjun Rao uncovers a bronze dial in Mysuru that hums whenever Kaveri waters rise.",
-        videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
+        videoUrl: "https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4",
         free: true
       },
       {
         id: 2,
         title: "Ep 2: Gates of 1365 Vijayanagara",
         synopsis: "Pulled across seven centuries, Arjun collides with Princess Devika inside the royal Virupaksha courtyard.",
-        videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4",
+        videoUrl: "https://media.w3.org/2010/05/sintel/trailer.mp4",
         free: true
       },
       {
         id: 3,
         title: "Ep 3: Vikramaditya's Spy",
-        synopsis: "Commander Vikramaditya Sen suspects Arjun is an northern spy—until the astrolabe predicts an ambush.",
-        videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4",
+        synopsis: "Commander Vikramaditya Sen suspects Arjun is a northern spy—until the astrolabe predicts an ambush.",
+        videoUrl: "https://media.w3.org/2010/05/bunny/trailer.mp4",
         free: true
       },
       {
         id: 4,
         title: "Ep 4: The Tungabhadra Cipher",
         synopsis: "Devika reveals the hidden chamber beneath Vittala Temple before the eclipse closes the rift.",
-        videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoy.mp4",
+        videoUrl: "https://media.w3.org/2010/05/video/movie_300.mp4",
         free: false
       },
       {
         id: 5,
         title: "Ep 5: Betrayal at Midnight",
         synopsis: "A forged royal seal turns the palace guard against Devika and Arjun.",
-        videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerMeltdowns.mp4",
+        videoUrl: "https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4",
         free: false
       },
       {
         id: 6,
         title: "Ep 6: Return to Mysuru",
         synopsis: "Arjun steps back into modern Mysuru—only to realize someone from 1365 followed him home.",
-        videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/WeAreGoingOnBullrun.mp4",
+        videoUrl: "https://media.w3.org/2010/05/sintel/trailer.mp4",
         free: false
       }
     ];
 
     const unlockedIds = new Set(JSON.parse(localStorage.getItem("kaveri_unlocked") || "[]"));
     let activeIndex = 0;
-    let isMuted = false;
+    // Start muted so Android WebView allows instant autoplay on launch; user can tap to unmute
+    let isMuted = true;
 
     const feedEl = document.getElementById("feed");
     const epGridEl = document.getElementById("epGrid");
@@ -225,13 +243,21 @@
       localStorage.setItem("kaveri_unlocked", JSON.stringify([...unlockedIds]));
     }
 
-    async function triggerRewardedAdUnlock(epId) {
-      // Hook point for @capacitor-community/admob Rewarded Video Ad
-      // When AdMob plugin is added, replace this instant unlock with AdMob.showRewardVideoAd()
+    function triggerRewardedAdUnlock(epId) {
       unlockedIds.add(epId);
       saveUnlocks();
       renderAll();
       scrollToEpisode(episodes.findIndex(e => e.id === epId));
+    }
+
+    function updateMuteUI() {
+      document.querySelectorAll("video").forEach(v => v.muted = isMuted);
+      document.querySelectorAll(".mute-btn").forEach(b => b.textContent = isMuted ? "🔇" : "🔊");
+      document.querySelectorAll(".mute-label").forEach(l => l.textContent = isMuted ? "Muted" : "Sound");
+      document.querySelectorAll(".status-pill").forEach(p => {
+        if (isMuted) p.classList.remove("hidden");
+        else p.classList.add("hidden");
+      });
     }
 
     function renderAll() {
@@ -240,15 +266,15 @@
 
       episodes.forEach((ep, idx) => {
         const unlocked = isEpisodeUnlocked(ep);
-
-        // Slide
         const slide = document.createElement("section");
         slide.className = "slide";
         slide.dataset.index = idx;
 
         if (unlocked) {
           slide.innerHTML = `
-            <video playsinline preload="metadata" ${isMuted ? "muted" : ""} src="${ep.videoUrl}"></video>
+            <video playsinline webkit-playsinline autoplay loop preload="auto" muted src="${ep.videoUrl}"></video>
+            <button class="status-pill ${isMuted ? "" : "hidden"}">🔇 Tap for Sound</button>
+            <button class="center-play">▶</button>
             <div class="overlay-bottom">
               <span class="ep-tag">The Kaveri Chronicle • Ep ${ep.id}</span>
               <div class="ep-name">${ep.title}</div>
@@ -257,7 +283,7 @@
             <div class="right-rail">
               <div>
                 <button class="rail-btn mute-btn">${isMuted ? "🔇" : "🔊"}</button>
-                <div class="rail-label">${isMuted ? "Muted" : "Sound"}</div>
+                <div class="rail-label mute-label">${isMuted ? "Muted" : "Sound"}</div>
               </div>
               <div>
                 <button class="rail-btn drawer-trigger">☰</button>
@@ -268,25 +294,50 @@
           `;
 
           const video = slide.querySelector("video");
+          const playBtn = slide.querySelector(".center-play");
+          const soundPill = slide.querySelector(".status-pill");
           const fill = slide.querySelector(".progress-fill");
 
-          video.addEventListener("click", () => {
-            if (video.paused) video.play(); else video.pause();
+          video.muted = isMuted;
+
+          video.addEventListener("playing", () => playBtn.classList.add("hidden"));
+          video.addEventListener("pause", () => playBtn.classList.remove("hidden"));
+          video.addEventListener("error", () => {
+            playBtn.textContent = "↻";
+            playBtn.classList.remove("hidden");
           });
+
+          const togglePlay = () => {
+            if (video.paused) video.play().catch(() => {});
+            else video.pause();
+          };
+
+          video.addEventListener("click", togglePlay);
+          playBtn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            video.load();
+            video.play().catch(() => {});
+          });
+
+          soundPill.addEventListener("click", (e) => {
+            e.stopPropagation();
+            isMuted = false;
+            updateMuteUI();
+            if (video.paused) video.play().catch(() => {});
+          });
+
           video.addEventListener("timeupdate", () => {
             if (video.duration) {
               fill.style.width = `${(video.currentTime / video.duration) * 100}%`;
             }
           });
-          video.addEventListener("ended", () => {
-            if (idx + 1 < episodes.length) scrollToEpisode(idx + 1);
-          });
+
           slide.querySelector(".mute-btn").addEventListener("click", (e) => {
             e.stopPropagation();
             isMuted = !isMuted;
-            document.querySelectorAll("video").forEach(v => v.muted = isMuted);
-            document.querySelectorAll(".mute-btn").forEach(b => b.textContent = isMuted ? "🔇" : "🔊");
+            updateMuteUI();
           });
+
           slide.querySelector(".drawer-trigger").addEventListener("click", (e) => {
             e.stopPropagation();
             drawerBackdrop.classList.add("open");
@@ -305,7 +356,6 @@
 
         feedEl.appendChild(slide);
 
-        // Drawer Card
         const card = document.createElement("div");
         card.className = `ep-card ${idx === activeIndex ? "active" : ""} ${!unlocked ? "locked" : ""}`;
         card.innerHTML = `
@@ -335,7 +385,10 @@
           if (entry.isIntersecting) {
             activeIndex = idx;
             document.querySelectorAll(".ep-card").forEach((c, i) => c.classList.toggle("active", i === idx));
-            if (video) video.play().catch(() => {});
+            if (video) {
+              video.muted = isMuted;
+              video.play().catch(() => {});
+            }
           } else if (video) {
             video.pause();
             video.currentTime = 0;
