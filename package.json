@@ -1,0 +1,16 @@
+{
+  "name": "kaveri-reels",
+  "version": "1.0.0",
+  "description": "The Kaveri Chronicle - Vertical AI Micro-Drama Streaming App",
+  "private": true,
+  "scripts": {
+    "build": "echo 'Static web assets ready in www/'"
+  },
+  "dependencies": {
+    "@capacitor/android": "^8.6.2",
+    "@capacitor/core": "^8.6.2"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^8.6.2"
+  }
+}
