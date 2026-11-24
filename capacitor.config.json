@@ -1,0 +1,11 @@
+{
+  "appId": "com.kaveriapps.kaverireels",
+  "appName": "Kaveri Reels",
+  "webDir": "www",
+  "server": {
+    "androidScheme": "https"
+  },
+  "android": {
+    "allowMixedContent": false
+  }
+}
